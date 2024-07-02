@@ -89,19 +89,18 @@ for letterIndex = 1:26
         % Find matching code in lookup table
         coor = find(LOOKUPTABLE == CODE);
         Letter = char(64+coor);
-
-        if isempty(Letter)
-            errorCount = errorCount + 1;
-        end
         
         disp(['Lookup Code: ', num2str(CODE)]);
         disp(['Char: ', Letter]);
+
+        if Letter == ''
+            errorCount = errorCount + 1;
+        end
     else
         % Handle the case where rowIndex exceeds the number of rows in the image
         error(['Row index ', num2str(rowIndex), ' exceeds the number of rows in the image.']);
     end
-end
 
-    
-disp(['']);
-disp(['Errors: ', num2str(errorCount)]);
+    disp(['']);
+    disp(['Errors: ', errorCount]);
+end
