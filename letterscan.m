@@ -35,9 +35,10 @@ LOOKUPTABLE = [
 
 for letterIndex = 1:26
     filename = [char(64 + letterIndex), '.jpg'];
+    fullFileName = fullfile("Images", filename);
 
     % Load the image
-    MyRawImage = imread(filename);
+    MyRawImage = imread(fullFileName);
     
     % Convert to grayscale if image is in RGB format
     if size(MyRawImage, 3) == 3
