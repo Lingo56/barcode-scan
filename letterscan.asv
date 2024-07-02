@@ -50,9 +50,6 @@ for letterIndex = 1:26
     % Check the size of MyRawImage
     [imageHeight, imageWidth] = size(MyRawImage);
     
-    % Display the dimensions of the image
-    disp(['Image dimensions: ', num2str(imageHeight), ' x ', num2str(imageWidth)]);
-    
     % Choose a valid row index within the image dimensions
     rowIndex = 400;
     
@@ -89,18 +86,21 @@ for letterIndex = 1:26
         % Find matching code in lookup table
         coor = find(LOOKUPTABLE == CODE);
         Letter = char(64+coor);
-        
-        disp(['Lookup Code: ', num2str(CODE)]);
-        disp(['Char: ', Letter]);
 
-        if Letter == ''
+        if isempty(Letter)
+            disp(['Lookup Code: ', num2str(CODE)]);
+            disp(['Char: ', Letter]);
             errorCount = errorCount + 1;
         end
+
+        disp(['Lookup Code: ', num2str(CODE)]);
+        disp(['Char: ', Letter]);
     else
         % Handle the case where rowIndex exceeds the number of rows in the image
         error(['Row index ', num2str(rowIndex), ' exceeds the number of rows in the image.']);
     end
-
-    disp(['']);
-    disp(['Errors: ', errorCount]);
 end
+
+    
+disp(['']);
+disp(['Errors: ', num2str(errorCount)]);

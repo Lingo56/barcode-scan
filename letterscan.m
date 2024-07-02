@@ -50,9 +50,6 @@ for letterIndex = 1:26
     % Check the size of MyRawImage
     [imageHeight, imageWidth] = size(MyRawImage);
     
-    % Display the dimensions of the image
-    disp(['Image dimensions: ', num2str(imageHeight), ' x ', num2str(imageWidth)]);
-    
     % Choose a valid row index within the image dimensions
     rowIndex = 400;
     
@@ -62,27 +59,33 @@ for letterIndex = 1:26
         OneLineData = double(MyRawImage(rowIndex, :));
     
         % Plot the extracted data
-        plot(OneLineData);
+        %plot(OneLineData);
         
         % Proceed with your further processing...
         % Example: Moving Average Filter with window size of ws
         ws = 10;
         OneLineDataAve = movmean(OneLineData, ws);
-        hold on;
-        plot(OneLineDataAve);
+        %hold on;
+        %plot(OneLineDataAve);
         
         % Calculate DataAveDif and plot
         DataAveDif = abs(diff(OneLineDataAve));
-        plot(DataAveDif);
-        hold on;
+        %plot(DataAveDif);
+        %hold on;
     
         % Find peaks in DataAveDif
-        [pks,locs] = findpeaks(DataAveDif,'MinPeakHeight',19,'MinPeakDistance',15);
-        plot(locs,pks,'or');
-    
+        [pks,locs] = findpeaks(DataAveDif,'MinPeakHeight',20,'MinPeakDistance',15);
+        %plot(locs,pks,'or');
+        
+
         widths = (locs(2:end)-locs(1:end-1));
         %%
         widths = floor(widths/min(widths));
+        % Replace 2s with 3s in widths array
+        % TODO: THIS SEEMS LIKE A HACK
+        % This is probably the main thing that would break when running
+        % full scale
+        widths(widths == 2) = 3;
                    
         CODE = str2num(strrep(num2str(widths), ' ', ''));
     
@@ -91,9 +94,13 @@ for letterIndex = 1:26
         Letter = char(64+coor);
 
         if isempty(Letter)
+            disp(['FAILED TO READ ']);
+            disp(['File: ', filename]);
+            disp(['Lookup Code: ', num2str(CODE)]);
+            disp(['Char: ', Letter]);
             errorCount = errorCount + 1;
         end
-        
+
         disp(['Lookup Code: ', num2str(CODE)]);
         disp(['Char: ', Letter]);
     else
@@ -101,7 +108,6 @@ for letterIndex = 1:26
         error(['Row index ', num2str(rowIndex), ' exceeds the number of rows in the image.']);
     end
 end
-
     
 disp(['']);
 disp(['Errors: ', num2str(errorCount)]);
